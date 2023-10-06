@@ -107,6 +107,11 @@ jobs:
       with:
         path: ${{ env.CARGO_CACHE_PATH }}
         key: ${{ runner.os }}-cargo-${{ env.CACHE_VERSION }}-${{ hashFiles('**/Cargo.lock') }}
+    - run: |
+        if! test -f "Cargo.lock"; then
+         echo Make sure you fix the versions, use: cargo generate-lockfile
+         exit 3;
+        fi
     - run: cargo build-dependencies
     - run: cargo check
     - name: Make '~/.cargo/git/db' in case git repositories are not used
