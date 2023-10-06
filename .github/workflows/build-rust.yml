@@ -108,7 +108,7 @@ jobs:
         path: ${{ env.CARGO_CACHE_PATH }}
         key: ${{ runner.os }}-cargo-${{ env.CACHE_VERSION }}-${{ hashFiles('**/Cargo.lock') }}
     - run: |
-        if! test -f "Cargo.lock"; then
+        if [ ! -f Cargo.lock ]
          echo Make sure you fix the versions, use: cargo generate-lockfile
          exit 3;
         fi
