@@ -109,8 +109,9 @@ jobs:
         key: ${{ runner.os }}-cargo-${{ env.CACHE_VERSION }}-${{ hashFiles('**/Cargo.lock') }}
     - run: |
         if [ ! -f Cargo.lock ]
+        then
          echo Make sure you fix the versions, use: cargo generate-lockfile
-         exit 3;
+         exit 3
         fi
     - run: cargo build-dependencies
     - run: cargo check
