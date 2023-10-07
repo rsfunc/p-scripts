@@ -98,11 +98,13 @@ jobs:
         key: ${{ runner.os }}-cargo-${{ env.CACHE_VERSION }}-${{ hashFiles('**/Cargo.lock') }}
     # check: https://doc.rust-lang.org/cargo/faq.html#why-do-binaries-have-cargolock-in-version-control-but-not-libraries
     - if: ${{ inputs.standalone == false }}
+      name: Check Cargo.lock for libraries
       run: |
         echo EXPECTED TO COMPILE A LIBRARY
         if [ -f Cargo.lock ];then echo Make sure that you do not check in Cargo.lock; exit 3; fi
         cargo generate-lockfile
     - if: ${{ inputs.standalone == true }}
+      name: Check Cargo.lock for binaries
       run: |
         echo EXPECTED TO COMPILE A BINARY
         if [ ! -f Cargo.lock ];then echo Make sure you fix the versions, use: cargo generate-lockfile; exit 3; fi
