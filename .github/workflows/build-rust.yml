@@ -241,6 +241,7 @@ jobs:
          github-token: ${{ secrets.GITHUB_TOKEN }} 
       - run: cargo tarpaulin --skip-clean --out Lcov
       - name: Upload coverage to Codecov
+        if: ${{ !env.ACT }}
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
