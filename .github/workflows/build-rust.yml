@@ -107,7 +107,7 @@ jobs:
       name: Check Cargo.lock for binaries
       run: |
         echo EXPECTED TO COMPILE A BINARY
-        if [ ! -f Cargo.lock ];then echo Make sure you fix the versions, use: cargo generate-lockfile; exit 3; fi
+        if [ ! -f Cargo.lock ];then echo Make sure you fix the versions, use: cargo generate-lockfile; echo "Furthermore, check that Cargo.lock is not .gitignore!"; exit 3; fi
     - name: Build dependencies if needed
       run: if grep -Fxq "[dependencies]" Cargo.toml; then cargo build-dependencies; fi;
     - run: cargo check
