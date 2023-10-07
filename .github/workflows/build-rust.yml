@@ -28,7 +28,7 @@ env:
   # NOTE: if you change COMPONENT, also increase the CACHE_VERSION!
   # related: https://rust-lang.github.io/rustup-components-history/
   COMPONENT: clippy,rustfmt,miri 
-  CACHE_VERSION: 35
+  CACHE_VERSION: 36
 
 
 jobs:
@@ -108,8 +108,10 @@ jobs:
       run: |
         echo EXPECTED TO COMPILE A BINARY
         if [ ! -f Cargo.lock ];then echo Make sure you fix the versions, use: cargo generate-lockfile; echo "Furthermore, check that Cargo.lock is not .gitignore!"; exit 3; fi
-    - name: Build dependencies if needed
+    - name: Build dependencies, that is cargo build without the current project 
       run: if grep -Fxq "[dependencies]" Cargo.toml; then cargo build-dependencies; fi;
+    - name: It seems that dev-dependencies are not build, this hack will do it
+      run: cargo build test --no-run || true
     - run: cargo check
     - name: Make dirs in case of empty project or git repositories are not used
       run: |
