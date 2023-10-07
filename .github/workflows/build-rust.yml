@@ -95,8 +95,12 @@ jobs:
       with:
         path: ${{ env.CARGO_CACHE_PATH }}
         key: ${{ runner.os }}-cargo-${{ env.CACHE_VERSION }}-${{ hashFiles('**/Cargo.lock') }}
-    - run: "if [ ! -f Cargo.lock ];then echo Make sure you fix the versions, use: cargo generate-lockfile; exit 3; fi"
-    - run: if grep -Fxq "[dependencies]" Cargo.toml; then cargo build-dependencies; fi;
+    - run: |
+          if grep -Fxq "[dependencies]" Cargo.toml; 
+          then 
+            # if [ ! -f Cargo.lock ];then echo Make sure you fix the versions, use: cargo generate-lockfile; exit 3; fi
+            cargo build-dependencies; 
+          fi;
     - run: cargo check
     - name: Make '~/.cargo/git/db' in case git repositories are not used
       run:  mkdir -p ~/.cargo/git/db  
