@@ -111,7 +111,7 @@ jobs:
     - name: Build dependencies, that is cargo build without the current project 
       run: if grep -Fxq "[dependencies]" Cargo.toml; then cargo build-dependencies; fi;
     - name: It seems that dev-dependencies are not build, this hack will do it
-      run: cargo build test --no-run || true
+      run: cargo test --no-run || true
     - run: cargo check
     - name: Make dirs in case of empty project or git repositories are not used
       run: |
