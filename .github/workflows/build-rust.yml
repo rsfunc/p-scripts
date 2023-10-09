@@ -28,7 +28,7 @@ env:
   # NOTE: if you change COMPONENT, also increase the CACHE_VERSION!
   # related: https://rust-lang.github.io/rustup-components-history/
   COMPONENT: clippy,rustfmt,miri 
-  CACHE_VERSION: 36
+  CACHE_VERSION: 37
 
 
 jobs:
