@@ -62,6 +62,7 @@ jobs:
         run: |
             cargo binstall cargo-tarpaulin -y  
             cargo binstall cargo-build-dependencies -y
+            cargo binstall cargo-udeps -y
       - name: Show available bins, remove non used to spare some room
         run: | 
              echo "rm rust-gdb";rm ~/.cargo/bin/rust-gdb ||:
@@ -110,7 +111,7 @@ jobs:
         if [ ! -f Cargo.lock ];then echo Make sure you fix the versions, use: cargo generate-lockfile; echo "Furthermore, check that Cargo.lock is not .gitignore!"; exit 3; fi
     - name: Build dependencies, that is cargo build without the current project 
       run: if grep -Fxq "[dependencies]" Cargo.toml; then cargo build-dependencies; fi;
-    - name: It seems that dev-dependencies are not build, this hack will do it
+    - name: It seems that dev-dependencies are not build, this hack will do it (mm does not work!?)
       run: cargo test --no-run || true
     - run: cargo check
     - name: Make dirs in case of empty project or git repositories are not used
@@ -208,7 +209,7 @@ jobs:
         run: cargo clippy -- -D warnings
 
         
-  tarpaulin:
+  tarpaulin_udeps:
     needs: [build]
     runs-on: ubuntu-latest
     env:
@@ -241,7 +242,10 @@ jobs:
         uses: metalbear-co/sccache-action@v1.1.0
         with:
          github-token: ${{ secrets.GITHUB_TOKEN }} 
-      - run: cargo tarpaulin --skip-clean --out Lcov
+      - name: udeps
+        run: cargo udeps
+      - name: tarpaulin
+        run: cargo tarpaulin --skip-clean --out Lcov
       - name: Upload coverage to Codecov
         if: ${{ !env.ACT }}
         uses: codecov/codecov-action@v3
